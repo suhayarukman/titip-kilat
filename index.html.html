@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitipKilat - Jasa Titip Kebutuhan Sat-Set</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#10B981',
+                        primaryDark: '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div class="max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg shadow-emerald-500/30">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base leading-tight text-slate-900">TitipKilat</h1>
+                    <p class="text-xs text-slate-500 flex items-center"><i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> Jastip Kilat Tanpa Ribet</p>
+                </div>
+            </div>
+            <div class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-100">
+                <i class="fa-solid fa-circle text-[8px] text-emerald-500 mr-1 animate-pulse"></i> Buka
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto w-full px-4 py-5 flex-grow">
+        
+        <!-- Banner Hero -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-500 rounded-3xl p-5 text-white mb-6 shadow-xl shadow-emerald-500/20 relative overflow-hidden">
+            <div class="relative z-10">
+                <span class="bg-white/20 text-[10px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Layanan Instan & Fleksibel</span>
+                <h2 class="text-xl font-bold mt-2">Pilih Layanan & Tulis Kebutuhanmu</h2>
+                <p class="text-xs text-emerald-100 mt-1 leading-relaxed">Antar makanan, belanja harian, obat, hingga bantuan ringan. Cukup pilih kategori & kirim via WhatsApp!</p>
+            </div>
+            <div class="absolute right-[-15px] bottom-[-25px] text-white/10 text-9xl font-black pointer-events-none">
+                <i class="fa-solid fa-basket-shopping"></i>
+            </div>
+        </div>
+
+        <!-- Order Form Card -->
+        <div class="bg-white border border-slate-100 rounded-3xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-sm text-slate-900 flex items-center">
+                    <i class="fa-solid fa-list-check text-emerald-500 mr-2"></i> Form Pesanan Jastip & Layanan
+                </h3>
+                <span class="text-[11px] text-slate-400">Custom Order</span>
+            </div>
+
+            <form id="jastipForm" onsubmit="sendToWhatsApp(event)" class="space-y-4">
+                
+                <!-- Kategori Pilihan (6 Kategori) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2">Pilih Jenis Layanan / Kategori <span class="text-rose-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button type="button" onclick="selectCategory('Antar Makanan dan Barang', this)" class="cat-btn py-3 px-3 bg-emerald-50 border-2 border-emerald-500 text-emerald-800 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center transition">
+                            <i class="fa-solid fa-utensils mb-1.5 text-base text-emerald-600"></i>
+                            Antar Makanan & Barang
+                        </button>
+                        <button type="button" onclick="selectCategory('Belanja Kebutuhan', this)" class="cat-btn py-3 px-3 bg-slate-50 border-2 border-slate-200 text-slate-600 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center hover:bg-slate-100 transition">
+                            <i class="fa-solid fa-cart-shopping mb-1.5 text-base text-blue-500"></i>
+                            Belanja Kebutuhan
+                        </button>
+                        <button type="button" onclick="selectCategory('Sayur dan Buah', this)" class="cat-btn py-3 px-3 bg-slate-50 border-2 border-slate-200 text-slate-600 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center hover:bg-slate-100 transition">
+                            <i class="fa-solid fa-carrot mb-1.5 text-base text-orange-500"></i>
+                            Sayur & Buah
+                        </button>
+                        <button type="button" onclick="selectCategory('Apotek atau Obat', this)" class="cat-btn py-3 px-3 bg-slate-50 border-2 border-slate-200 text-slate-600 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center hover:bg-slate-100 transition">
+                            <i class="fa-solid fa-pills mb-1.5 text-base text-rose-500"></i>
+                            Apotek / Obat
+                        </button>
+                        <button type="button" onclick="selectCategory('Ambil dan Antar Pesanan', this)" class="cat-btn py-3 px-3 bg-slate-50 border-2 border-slate-200 text-slate-600 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center hover:bg-slate-100 transition">
+                            <i class="fa-solid fa-box-archive mb-1.5 text-base text-amber-500"></i>
+                            Ambil & Antar Pesanan
+                        </button>
+                        <button type="button" onclick="selectCategory('Bantuan Pekerjaan Ringan Lainnya', this)" class="cat-btn py-3 px-3 bg-slate-50 border-2 border-slate-200 text-slate-600 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center hover:bg-slate-100 transition">
+                            <i class="fa-solid fa-hands-holding-child mb-1.5 text-base text-purple-500"></i>
+                            Bantuan Pekerjaan Lain
+                        </button>
+                    </div>
+                    <input type="hidden" id="selectedCategory" value="Antar Makanan dan Barang">
+                </div>
+
+                <!-- Detail / Daftar Pesanan -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Detail Pesanan / Tugas / Barang <span class="text-rose-500">*</span></label>
+                    <textarea id="orderItems" required rows="4" placeholder="Tuliskan detail pesanan secara lengkap di sini...&#10;Contoh: Tolong belikan 1 porsi Nasi Goreng Spesial di Warteg Bahari dekat stasiun." class="w-full px-3.5 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none leading-relaxed"></textarea>
+                    <p class="text-[11px] text-slate-400 mt-1">Sertakan nama toko/tempat asal jika ada agar kurir mudah mencari.</p>
+                </div>
+
+                <!-- Estimasi Budget / Biaya (Opsional) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Estimasi Budget Barang (Opsional)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-xs font-semibold">Rp</span>
+                        <input type="number" id="estBudget" placeholder="Contoh: 50000" class="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-3"></div>
+
+                <!-- Data Pemesan & Alamat -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Nama Pemesan <span class="text-rose-500">*</span></label>
+                    <input type="text" id="custName" required placeholder="Contoh: Budi Santoso" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Nomor WhatsApp Aktif <span class="text-rose-500">*</span></label>
+                    <input type="tel" id="custPhone" required placeholder="Contoh: 081234567890" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-xs font-semibold text-slate-600">Alamat Pengiriman / Tujuan <span class="text-rose-500">*</span></label>
+                        <button type="button" onclick="getGoogleMapsLocation()" class="text-xs text-emerald-600 hover:text-emerald-700 font-semibold flex items-center bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100 transition">
+                            <i class="fa-solid fa-map-pin mr-1"></i> Pin Lokasi GPS
+                        </button>
+                    </div>
+                    <textarea id="custAddress" required rows="2" placeholder="Nama jalan, nomor rumah, patokan terdekat..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+                    
+                    <!-- Google Maps Share Link Container -->
+                    <div id="mapLinkContainer" class="hidden mt-2 p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+                        <span class="text-xs text-emerald-800 font-medium truncate max-w-[240px]" id="mapLinkText">Lokasi GPS Terpasang</span>
+                        <button type="button" onclick="clearLocation()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold"><i class="fa-solid fa-xmark"></i> Hapus</button>
+                    </div>
+                    <input type="hidden" id="googleMapsUrl" value="">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Catatan Tambahan untuk Kurir</label>
+                    <input type="text" id="custNote" placeholder="Contoh: Tolong hubungi sebelum sampai rumah" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-2xl shadow-lg shadow-emerald-500/25 transition flex items-center justify-center space-x-2 mt-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Kirim Pesanan ke WhatsApp</span>
+                </button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-md mx-auto w-full px-4 py-4 text-center text-xs text-slate-400">
+        &copy; 2026 TitipKilat. Layanan Jasa Titip Aman & Terpercaya.
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-4 py-2.5 rounded-2xl text-xs font-medium shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center space-x-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">Berhasil!</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let gpsUrl = '';
+
+        // Select Category Button
+        function selectCategory(categoryName, btnElement) {
+            document.getElementById('selectedCategory').value = categoryName;
+            
+            // Reset all category buttons styling
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                btn.className = "cat-btn py-3 px-3 bg-slate-50 border-2 border-slate-200 text-slate-600 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center hover:bg-slate-100 transition";
+            });
+
+            // Activate clicked button
+            btnElement.className = "cat-btn py-3 px-3 bg-emerald-50 border-2 border-emerald-500 text-emerald-800 rounded-2xl text-xs font-semibold flex flex-col items-center justify-center text-center transition";
+        }
+
+        // Get GPS Location via Geolocation API
+        function getGoogleMapsLocation() {
+            if (!navigator.geolocation) {
+                showToast('Geolocation tidak didukung oleh browser Anda.');
+                return;
+            }
+
+            showToast('Mengambil koordinat GPS Anda...');
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    gpsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                    
+                    document.getElementById('googleMapsUrl').value = gpsUrl;
+                    document.getElementById('mapLinkText').innerText = `GPS: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                    document.getElementById('mapLinkContainer').classList.remove('hidden');
+                    
+                    const addressField = document.getElementById('custAddress');
+                    if(!addressField.value.includes('Google Maps')) {
+                        addressField.value += (addressField.value ? '\n' : '') + `[Link Google Maps: ${gpsUrl}]`;
+                    }
+
+                    showToast('Berhasil mendeteksi lokasi GPS!');
+                },
+                (error) => {
+                    showToast('Gagal mendeteksi lokasi. Pastikan GPS aktif.');
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        function clearLocation() {
+            gpsUrl = '';
+            document.getElementById('googleMapsUrl').value = '';
+            document.getElementById('mapLinkContainer').classList.add('hidden');
+            showToast('Link Google Maps dihapus.');
+        }
+
+        // Send to WhatsApp
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+
+            const category = document.getElementById('selectedCategory').value;
+            const items = document.getElementById('orderItems').value;
+            const budget = document.getElementById('estBudget').value;
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const note = document.getElementById('custNote').value || '-';
+            const mapUrl = document.getElementById('googleMapsUrl').value;
+
+            let message = `Halo TitipKilat, saya ingin memesan layanan berikut:\n\n`;
+            message += `*Kategori Layanan:* ${category}\n`;
+            message += `*Detail Pesanan / Tugas:*\n${items}\n\n`;
+            
+            if(budget) {
+                message += `*Estimasi Budget Barang:* Rp ${parseInt(budget).toLocaleString('id-ID')}\n`;
+            }
+
+            message += `*Nama Pemesan:* ${name}\n`;
+            message += `*No WhatsApp:* ${phone}\n`;
+            message += `*Alamat Pengiriman / Tujuan:* ${address}\n`;
+            
+            if(mapUrl) {
+                message += `*Google Maps Lokasi:* ${mapUrl}\n`;
+            }
+
+            message += `*Catatan Kurir:* ${note}\n\n`;
+            message += `Mohon segera dikonfirmasi ya kak, terima kasih!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Nomor WhatsApp tujuan admin jastip (ganti sesuai nomor Anda)
+            const adminWhatsAppNumber = "6283822163839"; 
+
+            window.open(`https://wa.me/${adminWhatsAppNumber}?text=${encodedMessage}`, '_blank');
+        }
+
+        // Toast Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
