@@ -43,8 +43,10 @@
                     <p class="text-xs text-slate-500 flex items-center"><i class="fa-solid fa-bolt text-emerald-500 mr-1"></i> Jastip Kilat Tanpa Ribet</p>
                 </div>
             </div>
-            <div class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-100">
-                <i class="fa-solid fa-circle text-[8px] text-emerald-500 mr-1 animate-pulse"></i> Buka
+            <!-- Status Indicator (Dynamic Update) -->
+            <div id="storeStatusBadge" class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-100 flex items-center">
+                <i id="storeStatusDot" class="fa-solid fa-circle text-[8px] text-emerald-500 mr-1 animate-pulse"></i> 
+                <span id="storeStatusText">Buka</span>
             </div>
         </div>
     </header>
@@ -52,6 +54,19 @@
     <!-- Main Container -->
     <main class="max-w-md mx-auto w-full px-4 py-5 flex-grow">
         
+        <!-- Store Operational Info Banner -->
+        <div id="storeInfoBanner" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 mb-4 text-xs text-emerald-900 flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                    <p class="font-bold" id="storeScheduleTitle">Jam Operasional: 08:00 - 21:00 WIB</p>
+                    <p class="text-[11px] text-emerald-700" id="storeScheduleDesc">Pesanan di luar jam buka akan diproses saat jam operasional kembali.</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Banner Hero -->
         <div class="bg-gradient-to-r from-emerald-600 to-teal-500 rounded-3xl p-5 text-white mb-6 shadow-xl shadow-emerald-500/20 relative overflow-hidden">
             <div class="relative z-10">
@@ -159,9 +174,9 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-2xl shadow-lg shadow-emerald-500/25 transition flex items-center justify-center space-x-2 mt-2">
+                <button type="submit" id="submitBtn" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-2xl shadow-lg shadow-emerald-500/25 transition flex items-center justify-center space-x-2 mt-2">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Kirim Pesanan ke WhatsApp</span>
+                    <span id="submitBtnText">Kirim Pesanan ke WhatsApp</span>
                 </button>
             </form>
         </div>
@@ -182,6 +197,61 @@
     <!-- JavaScript Application Logic -->
     <script>
         let gpsUrl = '';
+
+        // Konfigurasi Jam Buka & Tutup (Jam 08:00 s.d. 21:00)
+        const OPEN_HOUR = 8;
+        const CLOSE_HOUR = 21;
+
+        // Cek status buka/tutup otomatis saat halaman dimuat
+        function checkStoreStatus() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            const badge = document.getElementById('storeStatusBadge');
+            const dot = document.getElementById('storeStatusDot');
+            const text = document.getElementById('storeStatusText');
+            const banner = document.getElementById('storeInfoBanner');
+            const bannerTitle = document.getElementById('storeScheduleTitle');
+            const bannerDesc = document.getElementById('storeScheduleDesc');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+
+            const isOpen = currentHour >= OPEN_HOUR && currentHour < CLOSE_HOUR;
+
+            if (isOpen) {
+                // Status Buka
+                badge.className = "bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-100 flex items-center";
+                dot.className = "fa-solid fa-circle text-[8px] text-emerald-500 mr-1 animate-pulse";
+                text.innerText = "Buka";
+
+                banner.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 mb-4 text-xs text-emerald-900 flex items-center justify-between";
+                bannerTitle.innerText = `Jam Operasional: 08:00 - 21:00 WIB (Buka)`;
+                bannerDesc.innerText = "Pesanan Anda akan langsung diproses oleh kurir.";
+
+                submitBtn.className = "w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-2xl shadow-lg shadow-emerald-500/25 transition flex items-center justify-center space-x-2 mt-2";
+                submitBtnText.innerText = "Kirim Pesanan ke WhatsApp";
+                submitBtn.disabled = false;
+            } else {
+                // Status Tutup
+                badge.className = "bg-rose-50 text-rose-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-rose-100 flex items-center";
+                dot.className = "fa-solid fa-circle text-[8px] text-rose-500 mr-1";
+                text.innerText = "Tutup";
+
+                banner.className = "bg-rose-50 border border-rose-200 rounded-2xl p-3.5 mb-4 text-xs text-rose-900 flex items-center justify-between";
+                bannerTitle.innerText = `Jam Operasional: 08:00 - 21:00 WIB (Tutup)`;
+                bannerDesc.innerText = "Saat ini layanan sedang tutup. Pesanan tetap bisa dikirim & akan diproses besok.";
+
+                submitBtn.className = "w-full py-3.5 bg-slate-400 hover:bg-slate-500 text-white font-bold text-sm rounded-2xl shadow-md transition flex items-center justify-center space-x-2 mt-2";
+                submitBtnText.innerText = "Kirim Pesanan (Diluar Jam Kerja)";
+                // Tombol tetap aktif agar user bisa kirim pesan pre-order/catatan untuk besok
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Jalankan pengecekan saat halaman dimuat
+        window.onload = function() {
+            checkStoreStatus();
+        };
 
         // Select Category Button
         function selectCategory(categoryName, btnElement) {
@@ -241,6 +311,10 @@
         function sendToWhatsApp(event) {
             event.preventDefault();
 
+            const now = new Date();
+            const currentHour = now.getHours();
+            const isOpen = currentHour >= OPEN_HOUR && currentHour < CLOSE_HOUR;
+
             const category = document.getElementById('selectedCategory').value;
             const items = document.getElementById('orderItems').value;
             const budget = document.getElementById('estBudget').value;
@@ -251,6 +325,9 @@
             const mapUrl = document.getElementById('googleMapsUrl').value;
 
             let message = `Halo TitipKilat, saya ingin memesan layanan berikut:\n\n`;
+            if (!isOpen) {
+                message += `⚠️ *[CATATAN: Dikirim di luar jam operasional]*\n\n`;
+            }
             message += `*Kategori Layanan:* ${category}\n`;
             message += `*Detail Pesanan / Tugas:*\n${items}\n\n`;
             
